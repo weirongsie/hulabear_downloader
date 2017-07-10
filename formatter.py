@@ -34,6 +34,9 @@ class Formatter:
         match = re.search(ur"\xbc\xd0\xc3D(?P<title>.*)\n", article) # \xbc\xd0\xc3D = big5 encoding for 標題
         return match.group("title").rstrip()
 
+    def escape_article_title(self, title):
+        return re.sub(r"[\\/:\*\?\"<>\|]", "_", title)
+
     def _extract_content(self, match):
         if match:
             return match.group("content")

@@ -73,12 +73,18 @@ class Connector:
                 self.read()                        # read article list to clean screen
                 self._tn.write(str(i) + '\r\n'*2)  # directly input number to find article
                 content = self._formatter.normalize(self.read_article())
-                title = str(i) + " " + self._formatter.parse_article_title(content)
+                title = str(i) + self._formatter.escape_article_title(self._formatter.parse_article_title(content))
                 file.write(content)
                 self._tn.write('q')
 
-            os.rename(os.path.join(download_folder, str(i) + ".txt"),
-                      os.path.join(download_folder, title + ".txt"))
+            self._rename_article(download_folder, str(i)+".txt", title+".txt")
+
+    def _rename_article(self, download_folder, old_title, new_title):
+        try:
+            os.rename(os.path.join(download_folder, old_title),
+                      os.path.join(download_folder, new_title))
+        except:
+            print "cannot rename file as %s" % new_title
 
     def read(self):
         time.sleep(1)
