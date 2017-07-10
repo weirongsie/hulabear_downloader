@@ -99,10 +99,16 @@ class Connector:
     def read_article(self):
         data = ""
         # find the end of an article
-        while True:
+        counter = 0
+        while counter < 40:
             data += self.read()
             if data.find("(=\[]<>-+;'`jk)") >= 0:
                 break
             data += '<<hulabear_page_splitter>>'
             self._tn.write('\r\n')
+            counter += 1
+        else:
+            data = "you don't have permission to read this article. Possibly a F- or L-article."
+            print data
+
         return data

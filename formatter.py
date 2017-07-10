@@ -32,7 +32,10 @@ class Formatter:
     def parse_article_title(self, article):
         article = re.sub(r"\x1B", " ", article)
         match = re.search(ur"\xbc\xd0\xc3D(?P<title>.*)\n", article) # \xbc\xd0\xc3D = big5 encoding for 標題
-        return match.group("title").rstrip()
+        if match:
+            return match.group("title").rstrip()
+        else:
+            return ""
 
     def escape_article_title(self, title):
         return re.sub(r"[\\/:\*\?\"<>\|]", "_", title)
