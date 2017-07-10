@@ -29,6 +29,11 @@ class Formatter:
                    re.sub(r"([\s|\x1B]*\n)", "\n", match[1])
         return data
 
+    def parse_article_title(self, article):
+        article = re.sub(r"\x1B", " ", article)
+        match = re.search(ur"\xbc\xd0\xc3D(?P<title>.*)\n", article) # \xbc\xd0\xc3D = big5 encoding for 標題
+        return match.group("title").rstrip()
+
     def _extract_content(self, match):
         if match:
             return match.group("content")

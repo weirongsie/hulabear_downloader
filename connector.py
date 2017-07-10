@@ -62,6 +62,7 @@ class Connector:
 
     def download_board(self, board, start, end):
         self.enter_board(board)
+
         download_folder = "download_" + str(board)
         if not os.path.exists(download_folder):
             os.makedirs(download_folder)
@@ -71,10 +72,13 @@ class Connector:
                 print "start downloading article " + str(i)
                 self.read()                        # read article list to clean screen
                 self._tn.write(str(i) + '\r\n'*2)  # directly input number to find article
-                article = self.read_article()
-                content = self._formatter.normalize(article)
+                content = self._formatter.normalize(self.read_article())
+                title = str(i) + " " + self._formatter.parse_article_title(content)
                 file.write(content)
                 self._tn.write('q')
+
+            os.rename(os.path.join(download_folder, str(i) + ".txt"),
+                      os.path.join(download_folder, title + ".txt"))
 
     def read(self):
         time.sleep(1)
