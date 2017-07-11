@@ -54,7 +54,7 @@ class Connector:
         # try to skip board opening picture
         while True:
             if self.expect([u"看板《" + board + u"》"]) == -1:
-                print "press enter to skip board opening page."
+                print "trying to skip board opening page...."
                 self._tn.write('\r\n')
             else:
                 break
