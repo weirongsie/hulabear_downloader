@@ -1,5 +1,5 @@
 # Hulabear Downloader
-Download atricles from hulabear.twbbs.org
+Download atricles from telnet://hulabear.twbbs.org
 
 ## Getting Started
 ### Prerequisites
@@ -51,11 +51,11 @@ If you want to know the range of a page within an article, you can change `page_
 * Delete duplicated account login
 
 ## Known Issues
+Waiting for your pull request to fix these issues :)
 * Do not support most of the BBS control code
 * lines hit the end of the page will appear twice
   (because hulabear copies the ending line of a page to the next page as a begining line)
 * Unexpected spaces in article (due to BBS control code)
-Waiting for your pull request to fix these issues :)
 
 ## Acknowledgments
 
