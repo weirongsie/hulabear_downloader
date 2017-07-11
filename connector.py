@@ -81,10 +81,13 @@ class Connector:
 
     def _rename_article(self, download_folder, old_title, new_title):
         try:
+            if os.path.exists(os.path.join(download_folder, new_title)):
+                os.remove(os.path.join(download_folder, new_title))
+
             os.rename(os.path.join(download_folder, old_title),
                       os.path.join(download_folder, new_title))
-        except:
-            print "cannot rename file as %s" % new_title
+        except OSError as e:
+            print "cannot rename file as %s" % new_title, e
 
     def read(self):
         time.sleep(1)

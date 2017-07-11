@@ -21,8 +21,10 @@ class Formatter:
         self._current_line = 4
         data = data.replace("[;H\x1B[2J", "")  # article header
         data = re.sub(r"(\n)*\x1B\[[0-9]*;1H(?P<content>.*)\x1B\[K", self._extract_content, data)  # control code
+        data = re.sub(r"\x1B\[K", "", data)
         data = re.sub(r"\[(?P<line>[0-9]+);1H", self._line_no_to_breakers, data)  # mapping line number to new lines
-        data = re.sub(r"\n[^\n]*<<hulabear_page_splitter>>", "\n  "+self._page_splitter+"\n", data)  # page footer
+        data = re.sub(r"<<hulabear_page_splitter>>([\s\x1B])*", "<<hulabear_page_splitter>>\n  ", data)
+        data = re.sub(r"\n[^\n]*<<hulabear_page_splitter>>", "\n  "+self._page_splitter, data)  # page footer
         match = re.split(r"Origin:.*<hulabear.twbbs.org>", data) # split into article and comments
         if match and len(match) == 2:
             data = match[0] + u"Origin:  呼啦貝爾  <hulabear.twbbs.org>".encode("Big5") + \
