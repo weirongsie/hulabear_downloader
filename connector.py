@@ -41,23 +41,34 @@ class Connector:
             self._tn.write('y\r\n')
 
         # skip login info, hot topics, message bord
-        self._tn.write(self._password + '\r\n' * 3)
+        skip_cnt = 0
+        while self.expect([u"看板《尚未選定》"]) == -1:
+            skip_cnt += 1
+            print "skipped " + str(skip_cnt) + " / 3 login page..."               
+            self._tn.write('\r\n')
         print "login successfully."
 
     def enter_board(self, board):
         self._tn.write('b\r\n')         # enter board list
+        if self.expect([u"看板列表"]) == -1:
+            with open('error.log', 'a') as f:
+                f.write(self.buffer)
+            raise KeyError("expect board list but not. check error.log for details")
         self._tn.write('s')             # search
         self._tn.write(board + '\r\n')  # enter board name
         if self.expect([u"錯誤的看板名稱"]) != -1:
             raise KeyError("no board named " + board)
 
         # try to skip board opening picture
-        while True:
-            if self.expect([u"看板《" + board + u"》"]) == -1:
-                print "trying to skip board opening page...."
-                self._tn.write('\r\n')
-            else:
-                break
+        retry_cnt = 0
+        while self.expect([u"看板《" + board + u"》"]) == -1:
+            print "trying to skip board opening page...."
+            self._tn.write('\r\n')
+            retry_cnt += 1
+            if retry_cnt > 10:
+                raise KeyError("cannot enter the board. possible reasons: " + 
+                        "1) the board have more than 10 opening pages, or " + 
+                        "2) the board name you entered doesn't match (case-sensitive).")
         print "now you are in board: " + board
 
     def download_board(self, board, start, end):

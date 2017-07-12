@@ -9,6 +9,7 @@ class Formatter:
         self._config = ConfigParser.ConfigParser()
         self._config.read("config.ini")
         self._page_splitter = self._config.get("data", "page_splitter")
+        self._title_encode = self._config.get("encode", "file_name")
 
     def normalize(self, data):
         return self.reformat(self.decolor(data))
@@ -40,7 +41,8 @@ class Formatter:
             return ""
 
     def escape_article_title(self, title):
-        return re.sub(r"[\\/:\*\?\"<>\|]", "_", title)
+        return (re.sub(r"[\\/:\*\?\"<>\|]", "_", title)
+                .decode("big5", "strict").encode(self._title_encode, "strict"))
 
     def _extract_content(self, match):
         if match:
