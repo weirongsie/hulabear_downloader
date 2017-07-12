@@ -39,9 +39,14 @@ timeout = 6
 
 [data]
 page_splitter =
+
+[encode]
+file_name = big5 | utf8
+
 ```
-If your connection to hulabear is too slow, you can increase the `timeout` limit.
-If you want to know the range of a page within an article, you can change `page_splitter` to `--`
+- If your connection to hulabear is too slow, you can increase the `timeout` limit.
+- If you want to know the range of a page within an article, you can change `page_splitter` to `--`
+- The file name can be encoded to either big5 or utf-8.
 
 ## Features
 * Save each article as a single text file.
