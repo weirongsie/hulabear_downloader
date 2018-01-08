@@ -6,7 +6,7 @@ import os
 import formatter
 
 
-class Connector:
+class Hulabear:
     def __init__(self, host, account, password):
         self._host = host
         self._account = account
@@ -83,7 +83,9 @@ class Connector:
                 print "start downloading article " + str(i)
                 self.read()                        # read article list to clean screen
                 self._tn.write(str(i) + '\r\n'*2)  # directly input number to find article
-                content = self._formatter.normalize(self.read_article())
+                article = self.read_article()
+                print article
+                content = self._formatter.normalize(article)
                 title = str(i) + self._formatter.escape_article_title(self._formatter.parse_article_title(content))
                 file.write(content)
                 self._tn.write('q')
