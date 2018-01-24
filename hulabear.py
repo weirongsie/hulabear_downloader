@@ -5,17 +5,18 @@ from board import Board
 
 
 class Hulabear:
-    def __init__(self, host, account, password):
+    def __init__(self, host):
+        self._account = ""
+        self._password = ""
         self._host = host
-        self._account = account
-        self._password = password
-
         self.config = ConfigParser.ConfigParser()
         self.config.read("config.ini")
         self._timeout = self.config.getint("host", "timeout")
         print "set bbs timeout = " + str(self._timeout) + "s"
 
-    def login(self):
+    def login(self, account, password):
+        self._account = account
+        self._password = password
         print "start to login as %s....." % str(self._account)
         self._tn = ChineseTelnet(self._host, self._timeout)
         if self._tn.expect_list([u"請輸入代號："]) == -1:
